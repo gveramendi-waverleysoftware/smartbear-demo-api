@@ -25,6 +25,7 @@
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Docker](https://www.docker.com/) container  technology to manage application delivery lifecycle.
 
 ## Installation
 
@@ -57,6 +58,11 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+# Start Commands for docker-compose file
+Builds, (re)creates, starts, and attaches to containers for a service.  
+`docker-compose up`
+
 
 ## License
 
