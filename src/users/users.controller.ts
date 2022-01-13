@@ -3,11 +3,14 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
+import { FilterUserDto } from './dto/filter-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersService } from './users.service';
 
@@ -16,27 +19,67 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
+  async createUser(@Body() createUserDto: CreateUserDto) {
+    const user = await this.usersService.createUser(createUserDto);
 
-  @Get(':id')
-  get(@Param('id') id: string) {
-    return this.usersService.getById(+id);
+    return {
+      statusCode: HttpStatus.CREATED,
+      message: 'User created successfully',
+      user,
+    };
   }
 
   @Get()
-  getAll() {
-    return this.usersService.getAll();
+  async getAllUsers() {
+    const users = await this.usersService.getAllUsers();
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Users fetched successfully',
+      users,
+    };
+  }
+
+  @Get(':id')
+  async getUser(@Param('id') id: string) {
+    const user = await this.usersService.getUserById(+id);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User fetched successfully',
+      user,
+    };
+  }
+
+  @Get()
+  async getCustomer(@Query() filterUserDto: FilterUserDto) {
+    const users = await this.usersService.getUsers(filterUserDto);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Users fetched successfully',
+      users,
+    };
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  async update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+    const user = await this.usersService.updateUser(id, updateUserDto);
+
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'User updated successfully',
+      user,
+    };
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    this.usersService.delete(+id);
+  async delete(@Param('id') id: string) {
+    await this.usersService.deleteUser(+id);
+
+    return {
+      statusCode: HttpStatus.NO_CONTENT,
+      message: 'User deleted successfully',
+    };
   }
 }
