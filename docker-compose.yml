@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: smartbeardb
     ports:
-      - 5432:5432
+      - "5432:5432"
   api:
     image: smartbear-docker-app:latest
     build:
@@ -23,5 +23,4 @@ services:
     depends_on:
       - postgres
     ports:
-      - 3000:3000y
-      
+      - "3000:3000"
