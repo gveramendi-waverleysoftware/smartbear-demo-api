@@ -4,18 +4,26 @@ import {
   Delete,
   Get,
   HttpStatus,
+  Logger,
   Param,
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from 'src/auth/get-user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FilterUserDto } from './dto/filter-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
 @Controller('users')
+@UseGuards(AuthGuard())
 export class UsersController {
+  private logger = new Logger('UsersController');
+
   constructor(private usersService: UsersService) {}
 
   @Post()
@@ -30,8 +38,9 @@ export class UsersController {
   }
 
   @Get()
-  async getAllUsers() {
+  async getAllUsers(@GetUser() user: User) {
     const users = await this.usersService.getAllUsers();
+    this.logger.log(`User ${user.email} retrieving all tasks.`);
 
     return {
       statusCode: HttpStatus.OK,

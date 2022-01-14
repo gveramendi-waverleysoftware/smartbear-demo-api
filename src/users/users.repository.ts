@@ -2,7 +2,7 @@ import { EntityRepository, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { FilterUserDto } from './dto/filter-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './user.entity';
+import { User } from './entities/user.entity';
 
 @EntityRepository(User)
 export class UsersRepository extends Repository<User> {
